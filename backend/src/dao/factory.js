@@ -9,16 +9,16 @@ let cartsDao = null;
 const persistence = process.argv[2];
 switch(persistence){
     case '--mongo':
-        await connectionDB(); // Asegúrate de que connectionDB sea una función asíncrona si es necesario.
+        await connectionDB();
 
-        const { default: MongoUsersDAO } = await import("../dao/mongo/manager/userMongoManager.js");
-        userDao = new MongoUsersDAO();
+        const { default: UserManager } = await import("../dao/mongo/manager/userMongoManager.js");
+        userDao = new UserManager();
 
-        const { default: MongoProductDAO } = await import("../dao/mongo/manager/productMongoManager.js");
-        productDao = new MongoProductDAO();
+        const { default: ProductsManager } = await import("../dao/mongo/manager/productMongoManager.js");
+        productDao = new ProductsManager();
 
-        const { default: MongoCartsDAO } = await import("../dao/mongo/manager/cartsMongoManager.js");
-        cartsDao = new MongoCartsDAO();
+        const { default: CartsManager } = await import("../dao/mongo/manager/cartsMongoManager.js");
+        cartsDao = new CartsManager();
 
         break;
     case '--memory':

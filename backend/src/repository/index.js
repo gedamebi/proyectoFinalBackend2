@@ -1,6 +1,5 @@
-import { ContactRepository } from "./contact.repository.js";
-import ContactFactory from '../persistence/factory.js'
+import { UserRepository } from "./user.repository.js";
 
-const { ContactDao } = ContactFactory; // DAO
+import { userDao } from "../dao/factory.js";
 
-export const ContactServices = new ContactRepository(ContactDao)
+export const UserServices = new UserRepository(userDao)

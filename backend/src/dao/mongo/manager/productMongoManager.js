@@ -1,6 +1,6 @@
 import ProductModel from "../models/Product.model.js";
 
-export default class ProductsManager {
+class ProductsManager {
   constructor() {     
   }
     getProducts = async (limite) => {
@@ -32,6 +32,6 @@ export default class ProductsManager {
     paginateData = async (filter, data) => {
       return await ProductModel.paginate(filter, data);
     };
-
-
   }
+
+  export default ProductsManager;

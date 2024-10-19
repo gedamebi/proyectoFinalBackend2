@@ -1,7 +1,7 @@
 import CartsModel from "../models/Carts.model.js";
 import ProductModel from '../models/Product.model.js'
 
-export default class CartsManager{
+class CartsManager{
   constructor() {
   }
 
@@ -102,5 +102,6 @@ export default class CartsManager{
     cartFind.products.splice(0, cartFind.products.length)
     return await cartFind.save()
   };
-
 }
+
+export default CartsManager;

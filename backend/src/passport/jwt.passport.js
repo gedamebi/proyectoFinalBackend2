@@ -1,7 +1,8 @@
 import passport from 'passport';
 import jwt, { ExtractJwt } from 'passport-jwt';
 import { getJWTCookie } from '../utils.js';
-import { UserService } from '../services/index.js';
+//import { UserService } from '../services/index.js';
+//import { current } from "../controllers/user.controller.js"; 
 
 const JWTStrategy = jwt.Strategy
 
@@ -11,12 +12,7 @@ const initializePassport = () => {
     secretOrKey: process.env.SECRET
   }, async (payload, done) => {
     try {
-      const userFound = await UserService.current(payload.email)
-      if (!userFound) {
-        return done(null, false)
-      }
-
-      return done(null, userFound)
+      return done(null, payload)
     } catch (e) {
       return done(e)
     }
