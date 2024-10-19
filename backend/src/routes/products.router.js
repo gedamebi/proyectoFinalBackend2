@@ -1,5 +1,5 @@
 import CustomRouter from "./customRouter.js"
-import * as ControllerProducts from "../controllers/products.controller.js";
+import * as ControllerProducts from "../controllers/products.controller.js"
 
 export default class ProductsRouter extends CustomRouter {
     init(){

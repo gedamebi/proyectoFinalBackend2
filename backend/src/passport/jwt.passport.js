@@ -1,8 +1,6 @@
-import passport from 'passport';
-import jwt, { ExtractJwt } from 'passport-jwt';
-import { getJWTCookie } from '../utils.js';
-//import { UserService } from '../services/index.js';
-//import { current } from "../controllers/user.controller.js"; 
+import passport from 'passport'
+import jwt, { ExtractJwt } from 'passport-jwt'
+import { getJWTCookie } from '../utils.js'
 
 const JWTStrategy = jwt.Strategy
 
@@ -19,4 +17,4 @@ const initializePassport = () => {
   }))
 }
 
-export default initializePassport;
+export default initializePassport

@@ -1,4 +1,4 @@
-import CartsModel from "../models/Carts.model.js";
+import CartsModel from "../models/Carts.model.js"
 import ProductModel from '../models/Product.model.js'
 
 class CartsManager{
@@ -7,23 +7,18 @@ class CartsManager{
 
   getCarts = async (limite) => {
     if (limite)
-      return CartsModel.find().limit(limite).populate('products.product').lean();
+      return CartsModel.find().limit(limite).populate('products.product').lean()
 
-    return CartsModel.find().populate('products.product').lean();
+    return CartsModel.find().populate('products.product').lean()
   };
 
   getCartById = async (id) => {
-    try {
-      return await CartsModel.findById(id).lean();
-    } catch (e){
-      
-    }
-    return false;
-  };
+      return await CartsModel.findById(id).lean()
+  }
 
   getCartByIdviews = async (id) => {
-    return await CartsModel.findById(id).populate('products.product').lean();
-  };
+    return await CartsModel.findById(id).populate('products.product').lean()
+  }
 
   createCart = async (cart) => {                                                                
     const cartNew = await CartsModel.create(cart)
@@ -77,7 +72,7 @@ class CartsManager{
   }
 
   deleteCart = async (cid) => {
-    return await CartsModel.findByIdAndDelete(cid);
+    return await CartsModel.findByIdAndDelete(cid)
   };
 
   deleteProductCart = async (cartId, productId) => {
@@ -88,10 +83,10 @@ class CartsManager{
     );
 
     if (productIndex === -1) {
-      throw new Error("Product not found in cart");
+      throw new Error("Product not found in cart")
     }
-    cartFind.products.splice(productIndex, 1);
-    const cart = await cartFind.save();
+    cartFind.products.splice(productIndex, 1)
+    const cart = await cartFind.save()
 
     return cart
   }
@@ -101,7 +96,7 @@ class CartsManager{
     const cartFind = await this.getCartById(cid)
     cartFind.products.splice(0, cartFind.products.length)
     return await cartFind.save()
-  };
+  }
 }
 
 export default CartsManager;

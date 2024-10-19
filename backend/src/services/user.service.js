@@ -1,6 +1,6 @@
 
-import { generadorToken, isValidPassword } from "../utils.js";
-import { UserServices } from '../repository/index.js';
+import { generadorToken, isValidPassword } from "../utils.js"
+import { UserServices } from '../repository/index.js'
 
 export default class serviceUsers {
 
@@ -11,7 +11,7 @@ export default class serviceUsers {
       const token = generadorToken({ email: userFound.email, nombre: userFound.nombre, rol: userFound.rol })
       return token
     }
-    throw new Error('Credenciales inválidas');
+    throw new Error('Credenciales inválidas')
   }
 
   async getUserByEmail(email) {
@@ -22,7 +22,7 @@ export default class serviceUsers {
   async createUser (user) {
     const newUser = await UserServices.createUser(user)
     if (newUser) return newUser
-    throw new Error('Error al crear el usario');
+    throw new Error('Error al crear el usario')
   }
 }
   

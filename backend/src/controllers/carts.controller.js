@@ -1,11 +1,11 @@
-import { CartsService } from '../services/index.js';
-import { __dirname } from '../utils.js';
-import { ObjectId } from 'mongodb';
+import { CartsService } from '../services/index.js'
+import { __dirname } from '../utils.js'
+import { ObjectId } from 'mongodb'
 
 
 export const getCart = async (req, res) => {
     const { cid } = req.params;
-    const cartFinded = await CartsService.getCartbyIdviews(cid);
+    const cartFinded = await CartsService.getCartbyIdviews(cid)
 
     if (cartFinded == false){
         res.status(404).json({ message: 'Carrito no encontrado' })
@@ -69,17 +69,17 @@ export const addProductToCart = async (req, res) => {
 }
 
 export const deleteCart = async (req, res) => {
-    const { cid } = req.params;
+    const { cid } = req.params
 
     try {
-        const cartFinded = await CartsService.getCartbyId(cid);
+        const cartFinded = await CartsService.getCartbyId(cid)
 
         const newCart = {
             ...cartFinded,
             products: []
         }
 
-        const cartUpdated = await CartsService.updatecart(cid,newCart);
+        const cartUpdated = await CartsService.updatecart(cid,newCart)
 
         res.status(201).json({ message: 'Carrito vaciado correctamente', cart: cartUpdated})
     } catch (error) {
@@ -93,21 +93,21 @@ export const deleteProductoFromCart = async (req, res) => {
     try {
         const cartFinded = await CartsService.getCartbyId(cid);
 
-        const idToFind = new ObjectId(pid);
-        const exists = cartFinded.products.some(item => item.product.equals(idToFind));
+        const idToFind = new ObjectId(pid)
+        const exists = cartFinded.products.some(item => item.product.equals(idToFind))
         if(exists == false){
-            res.status(404).json({ message: 'Producto no existe en el carrito solicitado' });
+            res.status(404).json({ message: 'Producto no existe en el carrito solicitado' })
         } else {
             const cartFiltered = {
                 ...cartFinded,
                 products:  cartFinded.products.filter(prod => prod.product.toString() !== pid)
             }
             
-            const cartUpdated = await CartsService.updatecart(cid,cartFiltered);
+            const cartUpdated = await CartsService.updatecart(cid,cartFiltered)
     
-            res.status(201).json({ message: 'Producto eliminado del carrito correctamente', cart: cartUpdated});
+            res.status(201).json({ message: 'Producto eliminado del carrito correctamente', cart: cartUpdated})
         }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error.message })
     }
 }

@@ -1,7 +1,7 @@
-import mongoose, { model, Schema } from "mongoose";
-import mongoosePaginate from 'mongoose-paginate-v2';
+import mongoose, { model, Schema } from "mongoose"
+import mongoosePaginate from 'mongoose-paginate-v2'
 
-const cartsCollection = 'carts';
+const cartsCollection = 'carts'
 
 const CartsSchema = new Schema({
     products: {
@@ -19,7 +19,7 @@ const CartsSchema = new Schema({
     },
 })
 
-CartsSchema.plugin(mongoosePaginate);
+CartsSchema.plugin(mongoosePaginate)
 
-const CartsModel = model(cartsCollection, CartsSchema);
-export default CartsModel;
+const CartsModel = model(cartsCollection, CartsSchema)
+export default CartsModel

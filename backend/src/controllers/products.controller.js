@@ -1,5 +1,5 @@
 
-import { ProductService } from '../services/index.js';
+import { ProductService } from '../services/index.js'
 
 export const createProduct = async (req, res) => {
     const dataProducto = req.body;
@@ -8,13 +8,13 @@ export const createProduct = async (req, res) => {
         thumbnails = req.files ? req.files.map(file => 'img/' + file.filename) : [];
     } */
 
-    const { title, description, code, price, stock, category } = dataProducto;
+    const { title, description, code, price, stock, category } = dataProducto
     if (!title || !description || !code || !price || !stock || !category) {
-        return res.status(400).json({ error: 'Todos los campos son obligatorios, excepto thumbnails' });
+        return res.status(400).json({ error: 'Todos los campos son obligatorios, excepto thumbnails' })
     }
 
     if (!isNumeric(price) || !isNumeric(stock)){
-        return res.status(400).json({ error: 'Datos numericos invalidos' });
+        return res.status(400).json({ error: 'Datos numericos invalidos' })
     }
 
     try {
@@ -34,11 +34,11 @@ export const createProduct = async (req, res) => {
 }
 
 export const updateProduct = async (req, res) => {
-    const { pid } = req.params;
+    const { pid } = req.params
     const productReq = req.body
-    const { price, stock } = productReq;
+    const { price, stock } = productReq
     if ((price && !isNumeric(price)) || (stock && !isNumeric(stock))){
-        return res.status(400).json({ error: 'Datos numericos invalidos' });
+        return res.status(400).json({ error: 'Datos numericos invalidos' })
     }
 
     try {
@@ -54,7 +54,7 @@ export const updateProduct = async (req, res) => {
 }
 
 export const deleteProduct = async (req, res) => {
-    const { pid } = req.params;
+    const { pid } = req.params
     try {
         const retorno = await ProductService.deleteProductbyId(pid);
         if (retorno){
@@ -68,9 +68,9 @@ export const deleteProduct = async (req, res) => {
 }
 
 export const getProducts = async (req, res) => {
-    const { limit = 10, page = 1, sort = '', query } = req.query;
+    const { limit = 10, page = 1, sort = '', query } = req.query
 
-    const filter = {};
+    const filter = {}
     if (query) {
         try {
             Object.assign(filter, JSON.parse(query));
@@ -91,8 +91,8 @@ export const getProducts = async (req, res) => {
             ...(sort && { sort: { price: sortManager[sort]} }),
             customLabels: { docs: 'payload' }
         };
-        const resultado = await ProductService.paginateProduct(filter, options);
-        res.status(200).json({resultado, status: 'success'});
+        const resultado = await ProductService.paginateProduct(filter, options)
+        res.status(200).json({resultado, status: 'success'})
     } catch (error) {
         res.status(500).send({error: error.message, status: 'error'});
     }
@@ -101,11 +101,11 @@ export const getProducts = async (req, res) => {
 
 export const getProduct = async (req, res) => {
     const { pid } = req.params;  
-    const product = await ProductService.getProductsbyId(pid);
+    const product = await ProductService.getProductsbyId(pid)
     if (product == false){
-        res.status(404).json({ message: "Producto no encontrado" });
+        res.status(404).json({ message: "Producto no encontrado" })
     } else {
-        res.status(200).json({ resultado: product });
+        res.status(200).json({ resultado: product })
     }
 }
 

@@ -1,6 +1,6 @@
 import CustomRouter from "./customRouter.js"
-import { login, register, current } from "../controllers/user.controller.js";
-import { invokePassport } from "../middlewares/handlerError.js";
+import { login, register, current } from "../controllers/user.controller.js"
+import { invokePassport } from "../middlewares/handlerError.js"
 
 export default class UserRouter extends CustomRouter {
     init(){
