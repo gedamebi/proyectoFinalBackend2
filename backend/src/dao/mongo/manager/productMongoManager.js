@@ -34,7 +34,9 @@ class ProductsManager {
 
   updateProducts = async (id, product) => {
     try {
-      return await ProductModel.findByIdAndUpdate(id, product)
+      return await ProductModel.findByIdAndUpdate(id, {
+        ...product
+      }, { new: true });
     } catch (e){
       console.log(e)
       return null

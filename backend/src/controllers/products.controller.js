@@ -1,13 +1,14 @@
 
 import { ProductService } from '../services/index.js'
+import { isNumeric } from '../utils.js'
 
 export const createProduct = async (req, res) => {
-    const dataProducto = req.body;
+    const dataProducto = req.body
     /* let thumbnails = []
     if (req.files){
         thumbnails = req.files ? req.files.map(file => 'img/' + file.filename) : [];
     } */
-
+    
     const { title, description, code, price, stock, category } = dataProducto
     if (!title || !description || !code || !price || !stock || !category) {
         return res.status(400).json({ error: 'Todos los campos son obligatorios, excepto thumbnails' })
@@ -18,6 +19,7 @@ export const createProduct = async (req, res) => {
     }
 
     try {
+        
         await ProductService.createProduct({
             title, 
             description, 
@@ -29,6 +31,7 @@ export const createProduct = async (req, res) => {
         })
         res.status(201).json({ message: 'Producto agregado correctamente' })
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: error.message })
     }
 }
@@ -42,9 +45,7 @@ export const updateProduct = async (req, res) => {
     }
 
     try {
-        const productUpdated = await ProductService.updateproducts(pid, {
-            ...productReq
-          }, { new: true });
+        const productUpdated = await ProductService.updateproducts(pid, productReq)
 
         res.status(200).json({ resultado: 'Producto modificado correctamente', payload: productUpdated })     
     } catch (error) {
