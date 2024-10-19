@@ -1,6 +1,3 @@
-
- //import { userDao } from "../dao/factory.js";
-
  export class UserRepository {
 
     constructor(dao){
@@ -19,6 +16,4 @@
         return await this.dao.current(email);
     }
 }
-
-//export default new UserRepository();
   

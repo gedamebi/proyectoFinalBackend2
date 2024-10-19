@@ -1,35 +1,25 @@
-export default class serviceProducts {
-    constructor(dao) {
-      this.dao = dao;
-    }
+import { ProductsServices } from '../repository/index.js';
 
-  
-    /* getAllProducts = (limit) => {
-      return this.dao.getProducts(limit);
-    }; */
-  
-    getProductsbyId = (id) => {
-      return this.dao.getProductsById(id);
+export default class serviceProducts {
+
+    async getProductsbyId(id) {
+      return await ProductsServices.getProductsById(id);
     };
 
-    /* getProductsbyCode = (code) =>{
-      return this.dao.getProductsByCode(code);
-    } */
-
-    createProduct = (product) =>{
-      return this.dao.createProducts(product);
+    async createProduct(product) {
+      return await ProductsServices.createProducts(product);
     }
 
-    updateproducts = (id, product) =>{
-        return this.dao.updateProducts(id, product);
+    async updateproducts(id, product) {
+        return await ProductsServices.updateProducts(id, product);
     }
     
-    deleteProductbyId = (id) =>{
-        return this.dao.deleteProducts(id);
+    async deleteProductbyId(id) {
+        return await ProductsServices.deleteProducts(id);
     }
 
-    paginateProduct = (filter,data) =>{
-        return this.dao.paginateData(filter, data);
+    async paginateProduct(filter,options) {
+        return await ProductsServices.paginateProducts(filter, options);
     }
-  }
+}
   

@@ -24,5 +24,5 @@ export default class serviceUsers {
     if (newUser) return newUser
     throw new Error('Error al crear el usario');
   }
-  }
+}
   
