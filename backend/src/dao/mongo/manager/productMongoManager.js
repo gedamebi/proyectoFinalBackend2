@@ -5,27 +5,58 @@ class ProductsManager {
   }
   
   getProductsById = async (id) => {
-    return await ProductModel.findById(id)
+    try {
+      return await ProductModel.findById(id)
+    } catch (e){
+      console.log(e)
+      return null
+    }
+    
   }
 
   getProductsByCode = async (code) => {
-    return await ProductModel.find({code})
+    try {
+      return await ProductModel.find({code})
+    } catch (e){
+      console.log(e)
+      return null
+    }
   }
 
   createProducts = async (product) => {
-    return await ProductModel.create(product)
+    try {
+      return await ProductModel.create(product)
+    } catch (e){
+      console.log(e)
+      return null
+    }
   }
 
   updateProducts = async (id, product) => {
-    return await ProductModel.findByIdAndUpdate(id, product)
+    try {
+      return await ProductModel.findByIdAndUpdate(id, product)
+    } catch (e){
+      console.log(e)
+      return null
+    }
   }
 
   deleteProducts = async (id) => {
-    return await ProductModel.findByIdAndDelete(id)
+    try {
+      return await ProductModel.findByIdAndDelete(id)
+    } catch (e){
+      console.log(e)
+      return null
+    }
   }
   
   paginateProducts = async (filter, options) => {
-    return await ProductModel.paginate(filter, options)
+    try {
+      return await ProductModel.paginate(filter, options)
+    } catch (e){
+      console.log(e)
+      return null
+    }
   }
 }
 

@@ -6,40 +6,65 @@ class CartsManager{
   }
 
   getCarts = async (limite) => {
-    if (limite)
-      return CartsModel.find().limit(limite).populate('products.product').lean()
+    try{
+      if (limite)
+        return CartsModel.find().limit(limite).populate('products.product').lean()
 
-    return CartsModel.find().populate('products.product').lean()
+      return CartsModel.find().populate('products.product').lean()
+    } catch (e){
+      console.log(e)
+      return null
+    }
   };
 
   getCartById = async (id) => {
+    try{
       return await CartsModel.findById(id).lean()
+    } catch (e){
+      console.log(e)
+      return null
+    }
   }
 
   getCartByIdviews = async (id) => {
-    return await CartsModel.findById(id).populate('products.product').lean()
+    try{
+      return await CartsModel.findById(id).populate('products.product').lean()
+    } catch (e){
+      console.log(e)
+      return null
+    }
   }
 
-  createCart = async (cart) => {                                                                
-    const cartNew = await CartsModel.create(cart)
-    return cartNew
-  };
+  createCart = async (cart) => {      
+    try{                                                          
+      const cartNew = await CartsModel.create(cart)
+      return cartNew
+    } catch (e){
+      console.log(e)
+      return null
+    }
+  }
 
   addProductInCart = async (idCart, idProduct) => {
-    let bandera = false
-    const cartFind = await this.getCartById(idCart)
+    try{
+      let bandera = false
+      const cartFind = await this.getCartById(idCart)
 
-    cartFind.products.forEach((e) => {
-      if (e.idproduct == idProduct) {
-        e.quantity = e.quantity + 1
-        bandera = true
-      }
-    })
-    if (bandera) return cartFind.save()
+      cartFind.products.forEach((e) => {
+        if (e.idproduct == idProduct) {
+          e.quantity = e.quantity + 1
+          bandera = true
+        }
+      })
+      if (bandera) return cartFind.save()
 
-    cartFind.products.push({ idproduct: idProduct, quantity: 1 })
+      cartFind.products.push({ idproduct: idProduct, quantity: 1 })
 
-    return cartFind.save()
+      return cartFind.save()
+    } catch (e){
+      console.log(e)
+      return null
+    }
   }
 
   updateCart = async (id, cart) => {
@@ -48,54 +73,71 @@ class CartsManager{
         new: true,
       }).populate('products.product')
     } catch (e){
-      console.log("error")
+      console.log(e)
+      return null
     }
-    return null;
   };
 
   updateProductInCart = async (idCart, idProduct, quantity) => {
+    try{
+      const cartFind = await this.getCartById(idCart)
+      const productFind = await ProductModel.findById(idProduct)
 
-    const cartFind = await this.getCartById(idCart)
-    const productFind = await ProductModel.findById(idProduct)
+      if (productFind.stock >= quantity) {
+        cartFind.products.forEach((e) => {
+          if (e.idproduct == idProduct) {
+            e.quantity = quantity
+          }
+        })
 
-    if (productFind.stock >= quantity) {
-      cartFind.products.forEach((e) => {
-        if (e.idproduct == idProduct) {
-          e.quantity = quantity
-        }
-      })
-
-      await cartFind.save()
-      return true
+        await cartFind.save()
+        return true
+      }
+      return false
+    } catch (e){
+      console.log(e)
+      return null
     }
-    return false
   }
 
   deleteCart = async (cid) => {
-    return await CartsModel.findByIdAndDelete(cid)
-  };
+    try{
+      return await CartsModel.findByIdAndDelete(cid)
+    } catch (e){
+      console.log(e)
+      return null
+    }
+  }
 
   deleteProductCart = async (cartId, productId) => {
+    try{
+      const cartFind = await this.getCartById(cartId)
+      const productIndex = cartFind.products.findIndex(
+        (product) => JSON.stringify(product.idproduct) == JSON.stringify(productId)
+      );
 
-    const cartFind = await this.getCartById(cartId)
-    const productIndex = cartFind.products.findIndex(
-      (product) => JSON.stringify(product.idproduct) == JSON.stringify(productId)
-    );
+      if (productIndex === -1) {
+        throw new Error("Product not found in cart")
+      }
+      cartFind.products.splice(productIndex, 1)
+      const cart = await cartFind.save()
 
-    if (productIndex === -1) {
-      throw new Error("Product not found in cart")
+      return cart
+    } catch (e){
+      console.log(e)
+      return null
     }
-    cartFind.products.splice(productIndex, 1)
-    const cart = await cartFind.save()
-
-    return cart
   }
 
   deleteAllProducts = async (cid) => {
-
-    const cartFind = await this.getCartById(cid)
-    cartFind.products.splice(0, cartFind.products.length)
-    return await cartFind.save()
+    try{
+      const cartFind = await this.getCartById(cid)
+      cartFind.products.splice(0, cartFind.products.length)
+      return await cartFind.save()
+    } catch (e){
+      console.log(e)
+      return null
+    }
   }
 }
 

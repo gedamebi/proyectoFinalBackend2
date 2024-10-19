@@ -5,18 +5,33 @@ class UserManager {
         
     }
     getUserByEmail = async (email) => {
-        const userFound = await UserModel.findOne({ email }).lean()
-        return userFound
+        try{
+            const userFound = await UserModel.findOne({ email }).lean()
+            return userFound
+        } catch (e){
+            console.log(e)
+            return null
+        }
     }
 
     createUser = async (user) => {
-        let result = await UserModel.create(user)
-        return result
+        try{
+            let result = await UserModel.create(user)
+            return result
+        } catch (e){
+            console.log(e)
+            return null
+        }
     }
 
     current = async (email) =>{
-        let result = await  UserModel.findOne({ email }).populate('cart').lean()
-        return result
+        try{
+            let result = await  UserModel.findOne({ email }).populate('cart').lean()
+            return result
+        } catch (e){
+            console.log(e)
+            return null
+        }
     }
 }
 
