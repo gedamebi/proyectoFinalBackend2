@@ -1,5 +1,6 @@
 
 import { UserService } from '../services/index.js';
+import { UserDTO } from "../DTOs/users.dto.js";
 import { createHash, generadorToken, isValidPassword } from "../utils.js";
 
 export const login = async (req, res) => {
@@ -45,6 +46,7 @@ export const register = async (req, res) => {
 }
 
 export const current = async (req, res) => {
-  console.log("Usuario logueado: ", req.user)
-  res.send('Bienvenido ' + req.user.nombre + ' ' + req.user.apellido)
+  const sendUser = new UserDTO(req.user)
+  console.log("Usuario logueado: ", sendUser)
+  res.send('Bienvenido ' + sendUser.nombre + ' ' + sendUser.apellido)
 }
