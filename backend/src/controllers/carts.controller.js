@@ -1,6 +1,7 @@
-import { CartsService } from '../services/index.js'
+import { CartsService, ProductService, TicketService } from '../services/index.js'
 import { __dirname } from '../utils.js'
 import { ObjectId } from 'mongodb'
+import { TicketDTO } from "../DTOs/ticket.dto..js"
 
 
 export const getCart = async (req, res) => {
@@ -28,7 +29,7 @@ export const createCart = async (req, res) => {
 export const updateCart = async (req, res) => {
     const { cid } = req.params;
     const { ...products } = req.body;
-    const cartFinded = await CartsService.getCartbyId(cid);
+    const cartFinded = await CartsService.getCartbyId(cid, true);
     if(cartFinded == false) {
         res.status(404).json({ message: 'Carrito no encontrado' });
         return
@@ -53,6 +54,10 @@ export const addProductToCart = async (req, res) => {
 
         const cartFinded = await CartsService.getCartbyId(cid); 
     
+        if (cartFinded == false){
+            res.status(404).json({ message: 'Carrito no encontrado' });
+            return
+        }
         const indexProd = cartFinded.products.findIndex(prod => prod.product.toString() === pid);
         if(indexProd === -1){
             cartFinded.products.push({ product: pid, quantity: 1 })
@@ -72,7 +77,7 @@ export const deleteCart = async (req, res) => {
     const { cid } = req.params
 
     try {
-        const cartFinded = await CartsService.getCartbyId(cid)
+        const cartFinded = await CartsService.getCartbyId(cid, true)
 
         const newCart = {
             ...cartFinded,
@@ -91,7 +96,7 @@ export const deleteProductoFromCart = async (req, res) => {
     const { cid, pid } = req.params;
 
     try {
-        const cartFinded = await CartsService.getCartbyId(cid);
+        const cartFinded = await CartsService.getCartbyId(cid, true);
 
         const idToFind = new ObjectId(pid)
         const exists = cartFinded.products.some(item => item.product.equals(idToFind))
@@ -109,5 +114,53 @@ export const deleteProductoFromCart = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({ message: error.message })
+    }
+}
+
+export const purchase = async (req, res) => {
+    const { cid } = req.params;
+    try {
+        let productsOutOfStock = []
+        let productsPurchased = []
+        let total = 0;
+        let updateProd
+
+        const cart = await CartsService.getCartbyId(cid)
+
+        if (cart.products.length == 0) {
+            return res.status(200).json({
+                status: "ok",
+                error: "No tiene productos en el carrito"
+            });
+        }
+        for (const product of cart.products) {
+            const prod = await ProductService.getProductsbyId(product.product)
+            if (product.quantity <= prod.stock && prod) {
+                prod.stock = prod.stock - product.quantity
+                total += prod.price * product.quantity
+                updateProd = await ProductService.updateproducts(product.product, prod)
+                const deleteCart = await CartsService.deleteproductCart(cid, product.product)
+                productsPurchased.push(product)
+            } else {
+                productsOutOfStock.push(product)
+            }
+        }
+        
+        if (productsPurchased.length != 0) {
+            const ticketNew = new TicketDTO(total, req.user.email, productsPurchased)
+            const ticket = await TicketService.createPurchaseTicket(ticketNew)
+        }
+
+        return res.status(200).json({
+            status: "success",
+            productsOutOfStock,
+            productsPurchased,
+            total
+        });
+
+
+    } catch (error) {
+        console.log(error)
+        return res.status(404).json({ msg: "Error en Base de datos!", error: error })
     }
 }

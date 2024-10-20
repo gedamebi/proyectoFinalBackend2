@@ -3,6 +3,7 @@ import { connectionDB } from "./mongo/connection.js"
 let userDao = null
 let productDao = null
 let cartsDao = null
+let ticketDao = null
 
 const persistence = process.argv[2]
 switch(persistence){
@@ -18,6 +19,9 @@ switch(persistence){
         const { default: CartsManager } = await import("../dao/mongo/manager/cartsMongoManager.js")
         cartsDao = new CartsManager()
 
+        const { default: TicketManager } = await import("../dao/mongo/manager/ticketMongoManager.js")
+        ticketDao = new TicketManager()
+
         break;
     case '--memory':
         
@@ -28,4 +32,4 @@ switch(persistence){
         break;
 }
 
-export { userDao, productDao, cartsDao }
+export { userDao, productDao, cartsDao, ticketDao }

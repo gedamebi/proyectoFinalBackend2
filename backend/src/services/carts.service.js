@@ -2,8 +2,8 @@ import { CartsServices } from '../repository/index.js'
 
 export default class serviceCarts {
 
-  async getCartbyId(id) {
-    return await CartsServices.getCartById(id)
+  async getCartbyId(id, useLean = false) {
+    return await CartsServices.getCartById(id, useLean)
   };
 
   async getCartbyIdviews(id) {
@@ -17,4 +17,12 @@ export default class serviceCarts {
   async updatecart(id, newCart) {
       return await CartsServices.updateCart(id, newCart)
   }
+
+  async addProductinCart(idCart,idProduct) {
+    return await CartsServices.addProductInCart(idCart,idProduct);
+  }
+
+  async deleteproductCart(cid, pid) {
+    return await CartsServices.deleteProductCart(cid, pid);
+}
 }

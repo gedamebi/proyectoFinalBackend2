@@ -3,16 +3,18 @@ import * as ControllerCarts from "../controllers/carts.controller.js"
 
 export default class CartsRouter extends CustomRouter {
     init(){
-        this.get('/:cid',  ['PUBLIC'], ControllerCarts.getCart)
+        this.get('/:cid',  ['USER'], ControllerCarts.getCart)
 
-        this.post('/', ['PUBLIC'], ControllerCarts.createCart)
+        this.post('/', ['USER'], ControllerCarts.createCart)
 
-        this.put('/:cid', ['PUBLIC'], ControllerCarts.updateCart)
+        this.put('/:cid', ['USER'], ControllerCarts.updateCart)
         
-        this.put('/:cid/product/:pid', ['PUBLIC'], ControllerCarts.addProductToCart)
+        this.put('/:cid/product/:pid', ['USER'], ControllerCarts.addProductToCart)
 
-        this.delete('/:cid', ['PUBLIC'], ControllerCarts.deleteCart)
+        this.delete('/:cid', ['USER'], ControllerCarts.deleteCart)
 
-        this.delete('/:cid/product/:pid', ['PUBLIC'], ControllerCarts.deleteProductoFromCart)
+        this.delete('/:cid/product/:pid', ['USER'], ControllerCarts.deleteProductoFromCart)
+
+        this.post('/:cid/purchase', ['USER'], ControllerCarts.purchase)
     }
 }

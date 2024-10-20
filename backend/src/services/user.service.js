@@ -17,7 +17,7 @@ export default class serviceUsers {
   async getUserByEmail(email) {
     const userFound = await UserServices.getUserByEmail(email)
     if (userFound) return userFound
-    return 'usuario no encontrado'
+    return null
   }
 
   async createUser (user) {

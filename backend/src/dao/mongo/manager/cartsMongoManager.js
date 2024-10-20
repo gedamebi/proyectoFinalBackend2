@@ -1,5 +1,4 @@
 import CartsModel from "../models/Carts.model.js"
-import ProductModel from '../models/Product.model.js'
 
 class CartsManager{
   constructor() {
@@ -17,9 +16,13 @@ class CartsManager{
     }
   };
 
-  getCartById = async (id) => {
+  getCartById = async (id, useLean) => {
     try{
-      return await CartsModel.findById(id).lean()
+      if (useLean)
+        return await CartsModel.findById(id).lean()
+
+      return await CartsModel.findById(id)
+      
     } catch (e){
       console.log(e)
       return null
@@ -45,28 +48,6 @@ class CartsManager{
     }
   }
 
-  addProductInCart = async (idCart, idProduct) => {
-    try{
-      let bandera = false
-      const cartFind = await this.getCartById(idCart)
-
-      cartFind.products.forEach((e) => {
-        if (e.idproduct == idProduct) {
-          e.quantity = e.quantity + 1
-          bandera = true
-        }
-      })
-      if (bandera) return cartFind.save()
-
-      cartFind.products.push({ idproduct: idProduct, quantity: 1 })
-
-      return cartFind.save()
-    } catch (e){
-      console.log(e)
-      return null
-    }
-  }
-
   updateCart = async (id, cart) => {
     try {
       return await CartsModel.findByIdAndUpdate(id, cart, {
@@ -77,28 +58,6 @@ class CartsManager{
       return null
     }
   };
-
-  updateProductInCart = async (idCart, idProduct, quantity) => {
-    try{
-      const cartFind = await this.getCartById(idCart)
-      const productFind = await ProductModel.findById(idProduct)
-
-      if (productFind.stock >= quantity) {
-        cartFind.products.forEach((e) => {
-          if (e.idproduct == idProduct) {
-            e.quantity = quantity
-          }
-        })
-
-        await cartFind.save()
-        return true
-      }
-      return false
-    } catch (e){
-      console.log(e)
-      return null
-    }
-  }
 
   deleteCart = async (cid) => {
     try{
@@ -113,7 +72,7 @@ class CartsManager{
     try{
       const cartFind = await this.getCartById(cartId)
       const productIndex = cartFind.products.findIndex(
-        (product) => JSON.stringify(product.idproduct) == JSON.stringify(productId)
+        (product) => JSON.stringify(product.product) == JSON.stringify(productId)
       );
 
       if (productIndex === -1) {

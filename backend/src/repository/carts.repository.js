@@ -10,8 +10,8 @@ export class CartsRepository {
         return this.dao.getCarts()
     }
     
-    async getCartById(id) {
-        return await this.dao.getCartById(id)
+    async getCartById(id, useLean) {
+        return await this.dao.getCartById(id, useLean)
     }
     
     async getCartByIdviews(id) {

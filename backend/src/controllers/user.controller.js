@@ -7,7 +7,7 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body
     const token = await UserService.login(email, password)
-    return res.status(200).cookie('currentUser', token, { maxAge: 60000, signed: true, httpOnly: true }).json({ message: 'login OK', token })
+    return res.status(200).cookie('currentUser', token, { maxAge: 600000, signed: true, httpOnly: true }).json({ message: 'login OK', token })
   } catch (error) {
     res.status(401).json({ message: error.message })
   }
@@ -17,7 +17,7 @@ export const register = async (req, res) => {
   try {
     const { nombre, apellido, email, edad, password, rol } = req.body
     const userFound = await UserService.getUserByEmail(email)
-
+    console.log(userFound)
     if (userFound) {
       return res.status(400).json({ message: 'usuario ya existe' })
     }
