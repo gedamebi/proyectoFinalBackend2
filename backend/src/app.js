@@ -1,6 +1,6 @@
 import express from 'express';
 import { Server } from 'socket.io';
-import { AppInit, SocketInit } from './init/initialConfig.js';
+import { AppInit, SocketInit } from './init/initialConfig.js'
 
 const app = express()
 

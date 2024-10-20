@@ -2,6 +2,7 @@ import { CartsService, ProductService, TicketService } from '../services/index.j
 import { __dirname } from '../utils.js'
 import { ObjectId } from 'mongodb'
 import { TicketDTO } from "../DTOs/ticket.dto..js"
+import { sendEmailTiket } from '../helpers/helpersNodemailer.js'
 
 
 export const getCart = async (req, res) => {
@@ -133,6 +134,10 @@ export const purchase = async (req, res) => {
                 error: "No tiene productos en el carrito"
             });
         }
+
+        let mensajeSMTPproductsPurchased = '<h3>Detalle compra:</h3><table><tr><th>Cantidad</th><th>Producto</th></tr>'
+        let mensajeSMTPproductsOutOfStock = '<h3>Productos sin stock:</h3><table><tr><th>Cantidad</th><th>Producto</th></tr>'
+
         for (const product of cart.products) {
             const prod = await ProductService.getProductsbyId(product.product)
             if (product.quantity <= prod.stock && prod) {
@@ -141,15 +146,29 @@ export const purchase = async (req, res) => {
                 updateProd = await ProductService.updateproducts(product.product, prod)
                 const deleteCart = await CartsService.deleteproductCart(cid, product.product)
                 productsPurchased.push(product)
+                mensajeSMTPproductsPurchased += `<tr><td>${product.quantity}</td><td>${prod.title}</td></tr>`
             } else {
                 productsOutOfStock.push(product)
+                mensajeSMTPproductsOutOfStock += `<tr><td>${product.quantity}</td><td>${prod.title}</td></tr>`
             }
+        }
+
+        mensajeSMTPproductsPurchased += '</table>'
+        mensajeSMTPproductsOutOfStock += '</table>'
+
+        if (productsOutOfStock.length == 0) {
+            mensajeSMTPproductsOutOfStock = ''
         }
         
         if (productsPurchased.length != 0) {
             const ticketNew = new TicketDTO(total, req.user.email, productsPurchased)
             const ticket = await TicketService.createPurchaseTicket(ticketNew)
+
+
+            sendEmailTiket(ticketNew, mensajeSMTPproductsPurchased, mensajeSMTPproductsOutOfStock)
         }
+
+        
 
         return res.status(200).json({
             status: "success",
