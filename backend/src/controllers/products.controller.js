@@ -4,10 +4,10 @@ import { isNumeric } from '../utils.js'
 
 export const createProduct = async (req, res) => {
     const dataProducto = req.body
-    /* let thumbnails = []
+    let thumbnails = []
     if (req.files){
         thumbnails = req.files ? req.files.map(file => 'img/' + file.filename) : [];
-    } */
+    }
     
     const { title, description, code, price, stock, category } = dataProducto
     if (!title || !description || !code || !price || !stock || !category) {
@@ -26,8 +26,8 @@ export const createProduct = async (req, res) => {
             code, 
             price, 
             stock, 
-            category
-            /* thumbnails */
+            category,
+            thumbnails
         })
         res.status(201).json({ message: 'Producto agregado correctamente' })
     } catch (error) {

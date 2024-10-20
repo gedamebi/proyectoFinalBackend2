@@ -7,7 +7,6 @@ export default class serviceProducts {
     }
 
     async createProduct(product) {
-      console.log(product)
       return await ProductsServices.createProduct(product)
     }
 
