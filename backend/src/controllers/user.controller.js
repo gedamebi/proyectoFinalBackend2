@@ -3,6 +3,11 @@ import { UserService } from '../services/index.js'
 import { UserDTO } from "../DTOs/users.dto.js"
 import { createHash } from "../utils.js"
 
+export const logout = async (req, res) => {
+  res.clearCookie('currentUser')
+  res.json({ message: 'Logout exitoso' })
+}
+
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body
@@ -16,8 +21,12 @@ export const login = async (req, res) => {
 export const register = async (req, res) => {
   try {
     const { nombre, apellido, email, edad, password, rol } = req.body
+
+    if (rol === 'undefined'){
+      rol = 'USER'
+    }
+    
     const userFound = await UserService.getUserByEmail(email)
-    console.log(userFound)
     if (userFound) {
       return res.status(400).json({ message: 'usuario ya existe' })
     }
@@ -42,8 +51,7 @@ export const current = async (req, res) => {
   try {
     const user = await UserService.getUserByEmail(req.user.email)
     const sendUser = new UserDTO(user)
-    console.log("Usuario logueado: ", sendUser)
-    res.send('Bienvenido ' + sendUser.nombre + ' ' + sendUser.apellido)
+    res.send(sendUser)
   } catch (e){
     console.log(e)
   }

@@ -32,10 +32,11 @@ const addProduct = async (idProduct) => {
 			})
 		})
 
-	await fetch(`/api/carts/66ea0d60303df6631be27aea/product/${idProduct}`, {
+	await fetch(`/api/carts/${localStorage.getItem('cartUser')}/product/${idProduct}`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json",
+			"Authorization": localStorage.getItem('authToken')
 		},
 	})
 		.then(res => res.ok ? res.json() : Promise.reject(res))

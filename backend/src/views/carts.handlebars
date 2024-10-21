@@ -10,6 +10,9 @@
                 <button class="btn btn-outline-danger" onclick={delProdToCarts(`{{product._id}}`)} type="button">Eliminar</button>
             </div>
     {{/each}}
+    {{#if carts.products.length}}
+        <button class="btn btn-outline-primary btn-sm mt-2" onclick={purchase()} type="button">Finalizar compra</button>
+    {{/if}}
     <button class="btn btn-outline-primary btn-sm mt-2" onclick={volver()} type="button">Volver</button>
 </div>
 <script src="/js/carts.js"></script>

@@ -16,10 +16,22 @@ export const getCart = async (req, res) => {
     }
 }
 
+export const getCartByUser = async (req, res) => {
+    const { user } = req.params;
+    const cartFinded = await CartsService.getCartByUserviews(user)
+    if (cartFinded == false){
+        res.status(404).json({ message: 'Carrito no encontrado' })
+    } else {
+        res.status(200).json({ cartFinded })
+    }
+}
+
 export const createCart = async (req, res) => {
     try {
+        const { user } = req.body;
         const newCart = await CartsService.createcart({
-            products: []
+            products: [],
+            user : user
         })
         res.status(201).json({ message: 'Carrito creado correctamente', cart: newCart })
     } catch (error) {

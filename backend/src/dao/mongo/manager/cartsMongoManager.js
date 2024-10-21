@@ -38,8 +38,17 @@ class CartsManager{
     }
   }
 
+  getCartByUserviews = async (user) => {
+    try{
+      return await CartsModel.findOne({ user: user }).populate('products.product').lean();
+    } catch (e){
+      console.log(e)
+      return null
+    }
+  }
+
   createCart = async (cart) => {      
-    try{                                                          
+    try{                                   
       const cartNew = await CartsModel.create(cart)
       return cartNew
     } catch (e){

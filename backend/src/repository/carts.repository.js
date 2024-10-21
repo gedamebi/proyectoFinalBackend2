@@ -17,6 +17,10 @@ export class CartsRepository {
     async getCartByIdviews(id) {
         return await this.dao.getCartByIdviews(id)
     }
+
+    async getCartByUserviews(user) {
+        return await this.dao.getCartByUserviews(user)
+    }
     
     async createCart(cart) {                                                                
         const cartNew = await this.dao.createCart(cart)

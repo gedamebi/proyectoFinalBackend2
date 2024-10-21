@@ -12,6 +12,7 @@ const conversacion = []
 const usuarios = []
 
 export const AppInit = (app) => {
+
     dotenv.config()
     initializePassport()
     passport.initialize()

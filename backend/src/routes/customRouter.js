@@ -49,7 +49,8 @@ export default class CustomRouter {
     handlePolicies(policies) {
         return (req, res, next) => {
                 if(policies.includes('PUBLIC')) return next();
-                const reqJWT = req.headers.authorization
+                //const reqJWT = req.headers.authorization
+                const reqJWT = req.signedCookies.currentUser || req.headers.authorization?.split(' ')[1];
                 if(!reqJWT) return res.status(400).send({status:'error', message: 'no logueado' })
                     let userPayload = null
                 try{
@@ -63,5 +64,4 @@ export default class CustomRouter {
                 next()
             }
     }   
-
 }

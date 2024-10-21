@@ -3,7 +3,9 @@ import * as ControllerCarts from "../controllers/carts.controller.js"
 
 export default class CartsRouter extends CustomRouter {
     init(){
-        this.get('/:cid',  ['USER'], ControllerCarts.getCart)
+        this.get('/:cid', ['USER'], ControllerCarts.getCart)
+
+        this.get('/user/:user',  ['USER'], ControllerCarts.getCartByUser)
 
         this.post('/', ['USER'], ControllerCarts.createCart)
 

@@ -10,8 +10,12 @@ export default class serviceCarts {
     return await CartsServices.getCartByIdviews(id)
   }
 
-  async createcart(products){
-    return await CartsServices.createCart(products)
+  async getCartByUserviews(user) {
+    return await CartsServices.getCartByUserviews(user)
+  }
+
+  async createcart(cart){
+    return await CartsServices.createCart(cart)
   }
   
   async updatecart(id, newCart) {

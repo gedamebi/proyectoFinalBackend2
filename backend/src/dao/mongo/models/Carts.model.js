@@ -15,6 +15,10 @@ const CartsSchema = new Schema({
         }],
         default: []
     },
+    user : {
+        type: String,
+        default : ''
+    }
 })
 
 const CartsModel = model(cartsCollection, CartsSchema)
